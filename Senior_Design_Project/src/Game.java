@@ -160,8 +160,8 @@ public class Game extends Canvas implements Runnable { // taking everything from
         } else if (key == KeyEvent.VK_W) {
             p.setVelY(-5);
         } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-            if (p.getFruit() != null && p.getInventory() > 0) {
-                p.useFruit();
+            if (p.getFruit() != null) {
+                // p.useFruit();
                 c.addEntity(new Bullet(p.getX(), p.getY(), tex, this, p));
             }
             is_shooting = true;

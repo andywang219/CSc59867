@@ -1,5 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Queue;
+import java.util.LinkedList;
 //import java.awt.image.BufferedImage;
 
 public class Player extends GameObject implements EntityA {
@@ -8,17 +10,18 @@ public class Player extends GameObject implements EntityA {
     private Textures tex;
     private Game game;
     private Animation anim;
-    private Fruit has;
-    private int inventory;
-    private Fruit fired;
+    // private Fruit has;
+    // private int inventory;
+    private Queue<Fruit> bag;
+
 
     public Player(double x, double y, Textures tex, Game game) {
         // intialize player's location in the game
         super(x, y); // from game object class
         this.tex = tex;
         this.game = game;
-        inventory = 0;
         anim = new Animation(tex.player, 3, 6, 1, 3); // frames, speed, 1 column by 3 rows (last 2 parameters)
+        bag = new LinkedList<Fruit>();
         // format: frames, speed, col, row
     }
 
@@ -51,20 +54,24 @@ public class Player extends GameObject implements EntityA {
     }
 
     public void addFruit(Fruit f) {
-        has = f;
-        inventory = 1;
+        if (bag.size() < 3) {
+            bag.add(f);
+        }
     }
 
     public Fruit getFruit() {
-        return has;
+        if (bag.peek() != null) {
+            return bag.peek();
+        }
+        return null;
     }
 
     public int getInventory() {
-        return inventory;
+        return bag.size();
     }
 
     public void useFruit() {
-        inventory--;
+        bag.remove();
     }
 
     public double getX() {

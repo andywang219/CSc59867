@@ -28,6 +28,7 @@ public class Bullet extends GameObject implements EntityA {
     public void render(Graphics g) {
         if (currentFruit == null) {
             currentFruit = p.getFruit().getCurrentFruit();
+            p.useFruit();
         }
         // g.drawImage(currentFruit, (int) x, (int) y, null);
         anim.drawAnimation(g, x, y, 0);

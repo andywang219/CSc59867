@@ -44,7 +44,7 @@ public class Fruit extends GameObject implements EntityB {
         if(x >= Game.WIDTH - 32) x = Game.WIDTH - 32;
         if(y <= 0) y = 0;
         if(y >= Game.HEIGHT - 32) y = Game.HEIGHT - 32;
-        if (Physics.Collision(this, game.ea)) {
+        if (Physics.Collision(this, game.ea) && p.getInventory() < 3) {
             p.addFruit(this);
             c.removeEntity(this);
             //game.setEnemy_killed(game.getEnemy_killed() + 1);
