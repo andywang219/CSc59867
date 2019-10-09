@@ -10,7 +10,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import java.util.LinkedList;
 
-public class Game extends Canvas implements Runnable { // taking everything from canvas class and bringing it to Game (ruunable requires a certain method)
+public class Game extends Canvas implements Runnable { // taking everything from canvas class and bringing it to Game
+                                                       // (ruunable requires a certain method)
     private static final long serialVersionUID = 1L;
     public static final int WIDTH = 950;
     public static final int HEIGHT = 600;
@@ -20,7 +21,8 @@ public class Game extends Canvas implements Runnable { // taking everything from
     private boolean running = false;
     private Thread thread;
 
-    // buffer image: buffer/load the image before it projects and renders it - buffers whole window and access RGB
+    // buffer image: buffer/load the image before it projects and renders it -
+    // buffers whole window and access RGB
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferedImage spriteSheet = null;
     private BufferedImage background = null;
@@ -62,14 +64,16 @@ public class Game extends Canvas implements Runnable { // taking everything from
     }
 
     private synchronized void start() { // to start our thread
-        if (running) return;
+        if (running)
+            return;
         running = true;
         thread = new Thread(this);
         thread.start();
     }
 
     private synchronized void stop() { // to end our thread
-        if (!running) return;
+        if (!running)
+            return;
         running = false;
         try {
             thread.join(); // joins all threads together and waits for them to die
@@ -117,14 +121,14 @@ public class Game extends Canvas implements Runnable { // taking everything from
         p.tick();
         c.tick();
         if (enemy_killed >= enemy_count) {
-            enemy_count += 2; 
+            enemy_count += 2;
             enemy_killed = 0;
             c.createEnemy(enemy_count);
         }
         if (count++ % 100 == 0) {
             c.createFruit(p);
         }
-        //System.out.println(count++);
+        // System.out.println(count++);
     }
 
     // eveything in game that renders
@@ -134,7 +138,8 @@ public class Game extends Canvas implements Runnable { // taking everything from
 
         // initialize once and done
         if (bs == null) {
-            createBufferStrategy(3); // 3 means 3 buffers (buffer behind buffer behind screen and shoots to screen: improves time/performance)
+            createBufferStrategy(3); // 3 means 3 buffers (buffer behind buffer behind screen and shoots to screen:
+                                     // improves time/performance)
             return;
         }
 
@@ -152,13 +157,13 @@ public class Game extends Canvas implements Runnable { // taking everything from
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_D) {
-            p.setVelX(5);
+            p.setVelX(2);
         } else if (key == KeyEvent.VK_A) {
-            p.setVelX(-5);
+            p.setVelX(-2);
         } else if (key == KeyEvent.VK_S) {
-            p.setVelY(5);
+            p.setVelY(2);
         } else if (key == KeyEvent.VK_W) {
-            p.setVelY(-5);
+            p.setVelY(-2);
         } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
             if (p.getFruit() != null) {
                 // p.useFruit();
@@ -185,7 +190,8 @@ public class Game extends Canvas implements Runnable { // taking everything from
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.setPreferredSize(new Dimension(WIDTH, HEIGHT)); // Dimension: class to encapsulate a width and heigh dimension
+        game.setPreferredSize(new Dimension(WIDTH, HEIGHT)); // Dimension: class to encapsulate a width and heigh
+                                                             // dimension
         game.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         game.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 
