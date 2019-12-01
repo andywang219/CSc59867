@@ -7,19 +7,25 @@ import java.util.LinkedList;
 public class Player extends GameObject implements EntityA {
     private double velX = 0;
     private double velY = 0;
+    // private int speed;
     private Textures tex;
-    private Game game;
+    // private Game game;
     private Animation anim;
+    private KeyInput input;
+    private boolean isShooting;
+    private Controller controller;
     // private Fruit has;
     // private int inventory;
     private Queue<Fruit> bag;
 
 
-    public Player(double x, double y, Textures tex, Game game) {
+    public Player(double x, double y, int speed, Textures tex,/* Game game,*/ KeyInput input, Controller controller) {
         // intialize player's location in the game
         super(x, y); // from game object class
-        this.tex = tex;
-        this.game = game;
+        // this.tex = tex;
+        // this.game = game;
+        this.input = input;
+        this.controller = controller;
         anim = new Animation(tex.player, 3, 6, 1, 3); // frames, speed, 1 column by 3 rows (last 2 parameters)
         bag = new LinkedList<Fruit>();
         // format: frames, speed, col, row
@@ -29,6 +35,7 @@ public class Player extends GameObject implements EntityA {
         x += velX;
         y += velY;
 
+        // Keep player in bounds
         if(x <= 0) {
             x = 0;
         }
@@ -41,6 +48,38 @@ public class Player extends GameObject implements EntityA {
         if(y >= Game.HEIGHT - 32) {
             y = Game.HEIGHT - 32;
         }
+
+        // move the player according to key pressed
+        if (input.space.isPressed()) {
+            if (getFruit() != null && isShooting == false) {
+                isShooting = true;
+                controller.addEntity(new Bullet(getX(), getY(), this));
+            }
+        } else {
+            isShooting = false;
+        }
+
+        int tempVelX = 0;
+        int tempVelY = 0;
+
+        if (input.up.isPressed()) {
+            tempVelY = -2;
+        } 
+
+        if (input.down.isPressed()) {
+            tempVelY = 2;
+        } 
+
+        if (input.left.isPressed()) {
+            tempVelX = -2;
+        } 
+
+        if (input.right.isPressed()) {
+            tempVelX = 2;
+        } 
+
+        setVelX(tempVelX);
+        setVelY(tempVelY);
         anim.runAnimation();
     }
 

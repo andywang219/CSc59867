@@ -3,17 +3,17 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Bullet extends GameObject implements EntityA {
-    private Textures tex;
-    private Game game;
+    //private Textures tex;
+    //private Game game;
     private Player p;
     private Animation anim;
     private BufferedImage currentFruit = null;
 
-    public Bullet(double x, double y, Textures tex, Game game, Player p) {
+    public Bullet(double x, double y, /*Textures tex, Game game,*/ Player p) {
         super(x, y);
-        this.tex = tex;
+        //this.tex = tex;
         this.p = p;
-        this.game = game;
+        //this.game = game;
         anim = new Animation(p.getFruit().getCurrentFruit(), 3, 6, 1, 3);
     }
 
@@ -27,8 +27,10 @@ public class Bullet extends GameObject implements EntityA {
 
     public void render(Graphics g) {
         if (currentFruit == null) {
-            currentFruit = p.getFruit().getCurrentFruit();
-            p.useFruit();
+            if (p.getFruit() != null) {
+                currentFruit = p.getFruit().getCurrentFruit();
+                p.useFruit();
+            }
         }
         // g.drawImage(currentFruit, (int) x, (int) y, null);
         anim.drawAnimation(g, x, y, 0);

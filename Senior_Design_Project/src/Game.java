@@ -1,13 +1,11 @@
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
+
 import java.util.LinkedList;
 
 public class Game extends Canvas implements Runnable { // taking everything from canvas class and bringing it to Game
@@ -17,6 +15,7 @@ public class Game extends Canvas implements Runnable { // taking everything from
     public static final int HEIGHT = 600;
     public static final int SCALE = 4;
     public final String TITLE = "2D Game";
+    public KeyInput input;
 
     private boolean running = false;
     private Thread thread;
@@ -25,10 +24,9 @@ public class Game extends Canvas implements Runnable { // taking everything from
     // buffers whole window and access RGB
     private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     private BufferedImage spriteSheet = null;
+    private BufferedImage spriteSheet2 = null;
     private BufferedImage background = null;
     private BufferedImage fruits = null;
-
-    private boolean is_shooting = false;
 
     private int enemy_count = 3; // how many space ships to spawn
     private int enemy_killed = 0; // # of space ships killed
@@ -46,17 +44,19 @@ public class Game extends Canvas implements Runnable { // taking everything from
         BufferedImageLoader loader = new BufferedImageLoader();
         try {
             spriteSheet = loader.loadImage("./res/pink_ss.png");
+            spriteSheet2 = loader.loadImage("./res/red_ss.png");
             fruits = loader.loadImage("./res/fruits_ss.png");
             background = loader.loadImage("./res/background.png");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        addKeyListener(new KeyInput(this));
+        // addKeyListener(new KeyInput(this));
+        input = new KeyInput(this);
         tex = new Textures(this);
-        p = new Player(200, 200, tex, this);
         c = new Controller(tex, this);
-
+        
+        p = new Player(200, 200, 1, tex, input, c);
         c.createPlayer(p);
         c.createEnemy(enemy_count);
         ea = c.getEntityA();
@@ -154,40 +154,6 @@ public class Game extends Canvas implements Runnable { // taking everything from
         bs.show();
     }
 
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_D) {
-            p.setVelX(2);
-        } else if (key == KeyEvent.VK_A) {
-            p.setVelX(-2);
-        } else if (key == KeyEvent.VK_S) {
-            p.setVelY(2);
-        } else if (key == KeyEvent.VK_W) {
-            p.setVelY(-2);
-        } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-            if (p.getFruit() != null) {
-                // p.useFruit();
-                c.addEntity(new Bullet(p.getX(), p.getY(), tex, this, p));
-            }
-            is_shooting = true;
-        }
-    }
-
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_D) {
-            p.setVelX(0);
-        } else if (key == KeyEvent.VK_A) {
-            p.setVelX(0);
-        } else if (key == KeyEvent.VK_S) {
-            p.setVelY(0);
-        } else if (key == KeyEvent.VK_W) {
-            p.setVelY(0);
-        } else if (key == KeyEvent.VK_SPACE) {
-            is_shooting = false;
-        }
-    }
-
     public static void main(String[] args) {
         Game game = new Game();
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT)); // Dimension: class to encapsulate a width and heigh
@@ -209,6 +175,10 @@ public class Game extends Canvas implements Runnable { // taking everything from
 
     public BufferedImage getSpriteSheet() {
         return spriteSheet;
+    }
+
+    public BufferedImage getSpriteSheet2() {
+        return spriteSheet2;
     }
 
     public BufferedImage getFruitsSheet() {
