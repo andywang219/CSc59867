@@ -10,57 +10,40 @@ public class Bullet extends GameObject implements EntityA {
     private BufferedImage currentFruit = null;
     private double mx;
     private double my;
-    private double k;
-    private double c;
-    private double d, direction;
-    private double dx, dy;
+    private double dirX, dirY;
+    private int bulletSpeed = 5;
+//    private double timeStep = 1d/60d;
 
     public Bullet(double x, double y) {
         super(x, y);
     }
 
-    public Bullet(double x, double y, /*Textures tex, Game game,*/ Player p ,
-                  double mx, double my, double k, double c, double direction,
-                  double d) {
+    public Bullet(double x, double y, Player p, double mx, double my) {
         super(x, y);
         this.mx = mx;
         this.my = my;
-        this.k = k;
-        this.c = c;
-        this.d = d;
-        this.direction = direction;
-        //this.tex = tex;
         this.p = p;
-        //this.game = game;
         anim = new Animation(p.getFruit().getCurrentFruit(), 3, 6, 1, 3);
-        double angle =
-                -Math.toDegrees(Math.atan2(x - mx,
-                        y - my)) + 180;
-        if (x < mx) {
-            dx = 3;
-        }
-        if (x > mx) {
-            dx = -3;
-        }
-        if (y < my) {
-            dy = 3;
-        }
-        if (y > my) {
-            dy = -3;
-        }
+
+        // calculate the direction vector for it's movement
+        double dirX = mx - x;
+        double dirY = my - y;
+
+        // "normalize" the direction vector to be able to use the speed variable
+        double dirLength= Math.sqrt(dirX * dirX + dirY * dirY);
+        dirX = dirX / dirLength;
+        dirY = dirY / dirLength;
+
+        this.dirX = dirX;
+        this.dirY = dirY;
+
     }
 
     public void tick() {
+        // update the (x, y) position of the bullet
+        x = x + (dirX * bulletSpeed);
+        y = y + (dirY * bulletSpeed);
 
-        x += dx;
-        y += dy;
-
-        System.out.println("x: " + x);
-        System.out.println("y: " + y);
-
-        /*if (Physics.Collision(this, game.eb)) {
-            System.out.println("COLLISION DETECTED");
-        }*/
        anim.runAnimation();
     }
 

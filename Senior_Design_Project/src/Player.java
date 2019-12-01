@@ -101,8 +101,7 @@ public class Player extends GameObject implements EntityA {
                         "\nd: " + d + "\nxmain: " + xmain + "\nymain: " + ymain + "\nangle: " + angle);
 
                 controller.addEntity(new Bullet(getX(), getY(), this,
-                        xmouse, ymouse, k, c, direction,
-                        d));
+                        xmouse, ymouse));
             }
         }
     }
