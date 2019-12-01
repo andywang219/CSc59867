@@ -1,7 +1,6 @@
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.Queue;
+import java.awt.*;
 import java.util.LinkedList;
+import java.util.Queue;
 //import java.awt.image.BufferedImage;
 
 public class Player extends GameObject implements EntityA {
@@ -9,22 +8,26 @@ public class Player extends GameObject implements EntityA {
     private double velY = 0;
     // private int speed;
     private Textures tex;
-    // private Game game;
     private Animation anim;
+    private double angle;
     private KeyInput input;
+    private MouseInput mouseInput;
     private boolean isShooting;
+    private boolean clicked = false;
     private Controller controller;
     // private Fruit has;
     // private int inventory;
     private Queue<Fruit> bag;
 
 
-    public Player(double x, double y, int speed, Textures tex,/* Game game,*/ KeyInput input, Controller controller) {
+    public Player(double x, double y, int speed, Textures tex,/* Game game,
+    */ KeyInput input, Controller controller, MouseInput mouseInput) {
         // intialize player's location in the game
         super(x, y); // from game object class
         // this.tex = tex;
         // this.game = game;
         this.input = input;
+        this.mouseInput = mouseInput;
         this.controller = controller;
         anim = new Animation(tex.player, 3, 6, 1, 3); // frames, speed, 1 column by 3 rows (last 2 parameters)
         bag = new LinkedList<Fruit>();
@@ -50,14 +53,6 @@ public class Player extends GameObject implements EntityA {
         }
 
         // move the player according to key pressed
-        if (input.space.isPressed()) {
-            if (getFruit() != null && isShooting == false) {
-                isShooting = true;
-                controller.addEntity(new Bullet(getX(), getY(), this));
-            }
-        } else {
-            isShooting = false;
-        }
 
         int tempVelX = 0;
         int tempVelY = 0;
@@ -81,6 +76,35 @@ public class Player extends GameObject implements EntityA {
         setVelX(tempVelX);
         setVelY(tempVelY);
         anim.runAnimation();
+
+        if(mouseInput.getClicked()) {
+            if (getFruit() != null && mouseInput.getShooting() == false) {
+                System.out.println("shooting");
+                mouseInput.setShooting(true);
+
+                double xmouse = mouseInput.getX();
+                double ymouse = mouseInput.getY();
+                double xmain = getX();
+                double ymain = getY();
+                double k =
+                        (ymain- ymouse) / (xmain - xmouse);
+                double c = ymain - k * xmain;
+                double direction = k * xmain + c;
+                double d = 8D;
+
+                double angle =
+                        -Math.toDegrees(Math.atan2(xmain - xmouse,
+                                ymain - ymouse)) + 180;
+
+                System.out.println("mouse x: " + xmouse + "\nmouse y: " + ymouse + "\nk: "
+                        + k + "\nc: " + c + "\ndirection: " + direction +
+                        "\nd: " + d + "\nxmain: " + xmain + "\nymain: " + ymain + "\nangle: " + angle);
+
+                controller.addEntity(new Bullet(getX(), getY(), this,
+                        xmouse, ymouse, k, c, direction,
+                        d));
+            }
+        }
     }
 
     public void render(Graphics g) {
@@ -136,4 +160,30 @@ public class Player extends GameObject implements EntityA {
     public void setVelY(double velY) {
         this.velY = velY;
     }
+
+//    @Override
+//    public void mouseClicked(MouseEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void mousePressed(MouseEvent e) {
+//        System.out.println("hello");
+//        clicked = true;
+//    }
+//
+//    @Override
+//    public void mouseReleased(MouseEvent e) {
+//        clicked = false;
+//    }
+//
+//    @Override
+//    public void mouseEntered(MouseEvent e) {
+//
+//    }
+//
+//    @Override
+//    public void mouseExited(MouseEvent e) {
+//
+//    }
 }

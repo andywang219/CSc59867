@@ -1,21 +1,18 @@
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
-
 import java.awt.image.BufferedImage;
-import javax.swing.JFrame;
-
 import java.util.LinkedList;
 
 public class Game extends Canvas implements Runnable { // taking everything from canvas class and bringing it to Game
                                                        // (ruunable requires a certain method)
     private static final long serialVersionUID = 1L;
-    public static final int WIDTH = 950;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 1050;//950;
+    public static final int HEIGHT = 800;//600;
     public static final int SCALE = 4;
     public final String TITLE = "2D Game";
     public KeyInput input;
+    public MouseInput mouseInput;
 
     private boolean running = false;
     private Thread thread;
@@ -53,10 +50,11 @@ public class Game extends Canvas implements Runnable { // taking everything from
 
         // addKeyListener(new KeyInput(this));
         input = new KeyInput(this);
+        mouseInput = new MouseInput(this);
         tex = new Textures(this);
         c = new Controller(tex, this);
         
-        p = new Player(200, 200, 1, tex, input, c);
+        p = new Player(200, 200, 1, tex, input, c, mouseInput);
         c.createPlayer(p);
         c.createEnemy(enemy_count);
         ea = c.getEntityA();
@@ -125,7 +123,7 @@ public class Game extends Canvas implements Runnable { // taking everything from
             enemy_killed = 0;
             c.createEnemy(enemy_count);
         }
-        if (count++ % 100 == 0) {
+        if (count++ % 150 == 0) {
             c.createFruit(p);
         }
         // System.out.println(count++);
