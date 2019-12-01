@@ -58,19 +58,19 @@ public class Player extends GameObject implements EntityA {
         int tempVelY = 0;
 
         if (input.up.isPressed()) {
-            tempVelY = -2;
+            tempVelY = -1;
         } 
 
         if (input.down.isPressed()) {
-            tempVelY = 2;
+            tempVelY = 1;
         } 
 
         if (input.left.isPressed()) {
-            tempVelX = -2;
+            tempVelX = -1;
         } 
 
         if (input.right.isPressed()) {
-            tempVelX = 2;
+            tempVelX = 1;
         } 
 
         setVelX(tempVelX);
@@ -79,26 +79,10 @@ public class Player extends GameObject implements EntityA {
 
         if(mouseInput.getClicked()) {
             if (getFruit() != null && mouseInput.getShooting() == false) {
-                System.out.println("shooting");
                 mouseInput.setShooting(true);
 
                 double xmouse = mouseInput.getX();
                 double ymouse = mouseInput.getY();
-                double xmain = getX();
-                double ymain = getY();
-                double k =
-                        (ymain- ymouse) / (xmain - xmouse);
-                double c = ymain - k * xmain;
-                double direction = k * xmain + c;
-                double d = 8D;
-
-                double angle =
-                        -Math.toDegrees(Math.atan2(xmain - xmouse,
-                                ymain - ymouse)) + 180;
-
-                System.out.println("mouse x: " + xmouse + "\nmouse y: " + ymouse + "\nk: "
-                        + k + "\nc: " + c + "\ndirection: " + direction +
-                        "\nd: " + d + "\nxmain: " + xmain + "\nymain: " + ymain + "\nangle: " + angle);
 
                 controller.addEntity(new Bullet(getX(), getY(), this,
                         xmouse, ymouse));

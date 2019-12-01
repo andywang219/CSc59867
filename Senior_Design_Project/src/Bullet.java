@@ -30,7 +30,7 @@ public class Bullet extends GameObject implements EntityA {
         double dirY = my - y;
 
         // "normalize" the direction vector to be able to use the speed variable
-        double dirLength= Math.sqrt(dirX * dirX + dirY * dirY);
+        double dirLength = Math.sqrt(dirX * dirX + dirY * dirY);
         dirX = dirX / dirLength;
         dirY = dirY / dirLength;
 
@@ -41,8 +41,8 @@ public class Bullet extends GameObject implements EntityA {
 
     public void tick() {
         // update the (x, y) position of the bullet
-        x = x + (dirX * bulletSpeed);
-        y = y + (dirY * bulletSpeed);
+        x += (dirX * bulletSpeed);
+        y += (dirY * bulletSpeed);
 
        anim.runAnimation();
     }
