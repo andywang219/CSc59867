@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Textures {
     private SpriteSheet ss = null;
@@ -9,12 +10,14 @@ public class Textures {
     public BufferedImage player;
     public BufferedImage missile;
     public BufferedImage enemy;
+    public HashMap<BufferedImage, String> fruitNames;
 
     public Textures(Game game) {
         ss = new SpriteSheet(game.getSpriteSheet());
         ss2 = new SpriteSheet(game.getSpriteSheet2());
         fruits_ss = new SpriteSheet(game.getFruitsSheet());
         getTextures();
+        assignNames();
     }
 
     private void getTextures() { 
@@ -37,5 +40,18 @@ public class Textures {
         banana_a = fruits_ss.grabImage(5, 1, 32, 128); // animated
         
         missile = fruits_ss.grabImage(3, 1, 32, 128);
+    }
+
+    private void assignNames() {
+        fruitNames = new HashMap<>();
+        fruitNames.put(orange, "Orange");
+        fruitNames.put(apple, "Apple");
+        fruitNames.put(grape, "Grape");
+        fruitNames.put(watermelon, "Watermelon");
+        fruitNames.put(banana, "Banana");
+    }
+
+    public HashMap getFruitNames() {
+        return fruitNames;
     }
 }

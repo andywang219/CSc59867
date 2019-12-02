@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -15,6 +16,8 @@ public class Fruit extends GameObject implements EntityB {
     private Random r = new Random();
     private int index;
     private boolean is_spawned = false;
+    private HashMap fruitName;
+    private String spawnedFruit;
 
     public Fruit(double x, double y, Textures fruits, Controller c, Game game, Player p) {
         super(x, y);
@@ -22,6 +25,7 @@ public class Fruit extends GameObject implements EntityB {
         this.c = c;
         this.p = p;
         this.game = game;
+        this.fruitName = fruits.fruitNames;
         current_fruit = new ArrayList<BufferedImage>();
         current_fruit_a = new ArrayList<BufferedImage>();
         // The current fruit
@@ -56,8 +60,14 @@ public class Fruit extends GameObject implements EntityB {
             index = r.nextInt(5); // random index for current fruit
             g.drawImage(current_fruit.get(index), (int) x, (int) y, null); // randomly spawn specific fruit
             is_spawned = true;
+            spawnedFruit = (String) fruitName.get(current_fruit.get(index));
+            System.out.println("A " + getFruitName() + " just spawned");
         }
         g.drawImage(current_fruit.get(index), (int) x, (int) y, null); // randomly spawn specific fruit
+    }
+
+    public String getFruitName() {
+        return spawnedFruit;
     }
 
     public Rectangle getBounds() {

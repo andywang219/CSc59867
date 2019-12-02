@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
-//import java.awt.image.BufferedImage;
+// import java.awt.image.BufferedImage;
 
 public class Player extends GameObject implements EntityA {
     private double velX = 0;

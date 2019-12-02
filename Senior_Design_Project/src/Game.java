@@ -10,9 +10,10 @@ public class Game extends Canvas implements Runnable { // taking everything from
     public static final int WIDTH = 1050;//950;
     public static final int HEIGHT = 800;//600;
     public static final int SCALE = 4;
-    public final String TITLE = "2D Game";
+    public final String TITLE = "Fruit Dodgeball";
     public KeyInput input;
     public MouseInput mouseInput;
+    public static JFrame gameFrame;
 
     private boolean running = false;
     private Thread thread;
@@ -28,7 +29,7 @@ public class Game extends Canvas implements Runnable { // taking everything from
     private int enemy_count = 3; // how many space ships to spawn
     private int enemy_killed = 0; // # of space ships killed
 
-    private Player p;
+    private Player p; //p7777;
     private Controller c;
     private Textures tex;
     private int count;
@@ -55,7 +56,9 @@ public class Game extends Canvas implements Runnable { // taking everything from
         c = new Controller(tex, this);
         
         p = new Player(200, 200, 1, tex, input, c, mouseInput);
+        // p7777 = new Player(400, 400, 1, tex, input, c, mouseInput);
         c.createPlayer(p);
+        // c.createPlayer(p7777);
         c.createEnemy(enemy_count);
         ea = c.getEntityA();
         eb = c.getEntityB();
@@ -106,7 +109,8 @@ public class Game extends Canvas implements Runnable { // taking everything from
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000; // prevent looping again
-                System.out.println(updates + " Ticks, Fps " + frames);
+                // System.out.println(updates + " Ticks, Fps " + frames);
+                gameFrame.setTitle(updates + " Ticks, Fps " + frames);
                 updates = 0;
                 frames = 0;
             }
@@ -160,6 +164,7 @@ public class Game extends Canvas implements Runnable { // taking everything from
         game.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 
         JFrame frame = new JFrame(game.TITLE);
+        gameFrame = frame;
 
         frame.add(game);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -51,6 +51,16 @@ public class Bullet extends GameObject implements EntityA {
         if (currentFruit == null) {
             if (p.getFruit() != null) {
                 currentFruit = p.getFruit().getCurrentFruit();
+                String fruitName = p.getFruit().getFruitName();
+                if (fruitName.equals("Grape")) {
+                    bulletSpeed = 7;
+                } else if (fruitName.equals("Apple") || fruitName.equals("Orange")) {
+                    bulletSpeed = 5;
+                } else if (fruitName.equals("Banana")) {
+                    bulletSpeed = 4;
+                } else {
+                    bulletSpeed = 3;
+                }
                 p.useFruit();
             }
         }
